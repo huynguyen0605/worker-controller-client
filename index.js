@@ -7,6 +7,7 @@ const wrap = (s) => "{ return " + s + " };";
   const res = await fetch(`${serverUrl}/api/default-process`);
   const process = await res.json();
   for (const interaction of process.interactions) {
+    console.log(":============>interaction", interaction);
     const executeInit = new Function(wrap(interaction.content));
     const params = JSON.parse(interaction.params);
     await executeInit.call(null).call(null, params);
