@@ -8,12 +8,21 @@ const wrap = (s) => "{ return " + s + " };";
   let allParams = {};
   const process = await res.json();
   for (const interaction of process.interactions) {
-    console.log(":============>interaction", interaction);
-    const executeInit = new Function(wrap(interaction.content));
-    const params = JSON.parse(interaction.params);
-    allParams = { ...allParams, ...params };
-    let result = await executeInit.call(null).call(null, allParams);
-    allParams = { ...allParams, ...result };
-    console.log(allParams);
+    try {
+      console.log(":============>interaction", interaction);
+      const executeInit = new Function(wrap(interaction.content));
+      const params = JSON.parse(interaction.params);
+      console.log(":============>execute function", interaction);
+      if (params) {
+        allParams = { ...allParams, ...params };
+      }
+      let result = await executeInit.call(null).call(null, allParams);
+      if (result) {
+        allParams = { ...allParams, ...result };
+      }
+      console.log(allParams);
+    } catch (error) {
+      console.log(":============>error", error.message);
+    }
   }
 })();
