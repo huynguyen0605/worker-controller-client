@@ -1,5 +1,7 @@
-const fs = require("fs");
-const { serverUrl } = JSON.parse(fs.readFileSync("config.json", "utf8"));
+const fs = await import("fs");
+const path = require("path");
+const configPath = path.join(__dirname, "config.json");
+const { serverUrl } = JSON.parse(fs.readFileSync(configPath, "utf8"));
 
 const wrap = (s) => "{ return " + s + " };";
 
