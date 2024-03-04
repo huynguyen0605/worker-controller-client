@@ -41,7 +41,7 @@ const wrap = (s) => "{ return " + s + " };";
     try {
       await execute();
     } catch (error) {
-      consosle.log("error", error.message);
+      console.log("error", error.message);
       await waitFor(60000);
     }
   }
