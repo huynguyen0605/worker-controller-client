@@ -32,7 +32,7 @@ const wrap = (s) => "{ return " + s + " };";
         }
         console.log(allParams);
       } catch (error) {
-        console.log(":============>error", error.message);
+        throw error;
       }
     }
   };
@@ -42,8 +42,8 @@ const wrap = (s) => "{ return " + s + " };";
       await execute();
     } catch (error) {
       console.log("error", error.message);
-      console.log("retrying in 60s");
-      await waitFor(60000);
+      console.log("retrying in 20s");
+      await waitFor(20000);
     }
   }
 })();
