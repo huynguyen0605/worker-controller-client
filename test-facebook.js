@@ -12,10 +12,10 @@ async function step1({ defaultName, configPath }) {
     const availableClient = await resClient.json();
     if (availableClient) {
       const updatedConfig = {
-        ...JSON.parse(fs.readFileSync("config.json", "utf8")),
+        ...JSON.parse(fs.readFileSync(configPath, "utf8")),
         clientName: availableClient.name,
       };
-      fs.writeFileSync("config.json", JSON.stringify(updatedConfig, null, 2));
+      fs.writeFileSync(configPath, JSON.stringify(updatedConfig, null, 2));
     }
     console.log("availableClient", availableClient);
     return { wrap, configPath };
