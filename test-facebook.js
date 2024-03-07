@@ -266,11 +266,15 @@ async function interaction({
       console.log("resJson", resJson);
       const { code, _id } = resJson;
       console.log("id job", _id, code);
-      const executeInit = new Function(wrap(code));
-      await executeInit.call(null).call(null, { browser, page, waitFor, wrap });
-      await fetch(serverUrl + "/api/done-job&id=" + _id);
-      await waitFor(5000);
-      await page.goto("https://www.facebook.com");
+      if (code) {
+        const executeInit = new Function(wrap(code));
+        await executeInit
+          .call(null)
+          .call(null, { browser, page, waitFor, wrap });
+        await fetch(serverUrl + "/api/done-job&id=" + _id);
+        await waitFor(5000);
+        await page.goto("https://www.facebook.com");
+      }
     } catch (error) {
       console.log("error", error.message);
       await waitFor(5000);
