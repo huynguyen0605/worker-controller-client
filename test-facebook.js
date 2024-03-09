@@ -133,6 +133,12 @@ async function openFacebook({ chromePath, url }) {
   ]);
 
   const page = await browser.newPage();
+  page.on("dialog", async (dialog) => {
+    console.log(`Dialog message: ${dialog.message()}`);
+
+    // Accept the dialog (confirm)
+    await dialog.accept();
+  });
   await page.goto(url);
   return { browser, page, waitFor };
 }
@@ -579,7 +585,9 @@ async function interaction({
 
   setInterval(async () => {
     await fetchData();
-  }, 60 * 1000 * 10);
+  }, 60 * 1000 * 90);
+
+  await fetchData();
   while (true) {
     const randomFunction = selectRandomFunction();
     try {
