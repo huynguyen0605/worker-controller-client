@@ -314,7 +314,7 @@ async function interaction({
   };
   async function fetchFeed(pageUrl) {
     const limitPost = 20;
-    const limitTurn = 20;
+    const limitTurn = 10;
     let turn = 0;
     try {
       await page.goto(pageUrl);
@@ -415,6 +415,8 @@ async function interaction({
   }
   async function fetchGroup(groupUrl) {
     const limitPost = 20;
+    const limitTurn = 10;
+    let turn = 0;
     try {
       await page.goto(groupUrl);
       await waitFor(1000);
@@ -470,7 +472,8 @@ async function interaction({
             }
           });
         }
-        if (postLinks.length >= limitPost) break;
+        turn++;
+        if (postLinks.length >= limitPost || turn > limitTurn) break;
       }
       const posts = [];
       for (const [indexLink, postLink] of postLinks.entries()) {
