@@ -556,7 +556,7 @@ async function interaction({
     }
   }
   const functions = [
-    { fn: scroll, weight: 150 },
+    { fn: scroll, weight: 200 },
     { fn: fetchData, weight: 1 },
     { fn: like, weight: 2 },
   ];
