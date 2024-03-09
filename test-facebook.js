@@ -546,10 +546,10 @@ async function interaction({
           await fetchFeed(url);
         }
         await waitFor(1000);
-        await page.goto("https://www.facebook.com/");
-        isExecuting = false;
-        await waitFor(10000);
       }
+      await page.goto("https://www.facebook.com/");
+      isExecuting = false;
+      await waitFor(10000);
     } catch (error) {
       isExecuting = false;
       console.log("fetchData error " + error.message);
