@@ -257,7 +257,7 @@ async function interaction({
   const config = fs.readFileSync(configPath, "utf8");
   const { serverUrl, clientName } = JSON.parse(config);
 
-  let isExecuting = false;
+  var isExecuting = false;
   async function executeJob() {
     if (isExecuting) return;
     isExecuting = true;
