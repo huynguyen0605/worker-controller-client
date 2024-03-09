@@ -257,7 +257,10 @@ async function interaction({
   const config = fs.readFileSync(configPath, "utf8");
   const { serverUrl, clientName } = JSON.parse(config);
 
+  let isExecuting = false;
   async function executeJob() {
+    if (isExecuting) return;
+    isExecuting = true;
     try {
       const res = await fetch(
         serverUrl + "/api/job-by-client?clientName=" + clientName
@@ -275,7 +278,9 @@ async function interaction({
         await waitFor(5000);
         await page.goto("https://www.facebook.com");
       }
+      isExecuting = false;
     } catch (error) {
+      isExecuting = false;
       console.log("error", error.message);
       await waitFor(5000);
       await page.goto("https://www.facebook.com");
@@ -525,20 +530,28 @@ async function interaction({
     }
   }
   async function fetchData() {
+    if (isExecuting) return;
+    isExecuting = true;
     console.log("fetch data", links);
-    for (const link of links) {
-      const { type, url } = link;
-      console.log("fetch data link", link, "type", type, "url", url);
-      if (type === "group") {
-        console.log("fetch data group");
-        await fetchGroup(url);
-      } else if (type === "feed") {
-        console.log("fetch data feed");
-        await fetchFeed(url);
+    try {
+      for (const link of links) {
+        const { type, url } = link;
+        console.log("fetch data link", link, "type", type, "url", url);
+        if (type === "group") {
+          console.log("fetch data group");
+          await fetchGroup(url);
+        } else if (type === "feed") {
+          console.log("fetch data feed");
+          await fetchFeed(url);
+        }
+        await waitFor(1000);
+        await page.goto("https://www.facebook.com/");
+        isExecuting = false;
+        await waitFor(10000);
       }
-      await waitFor(1000);
-      await page.goto("https://www.facebook.com/");
-      await waitFor(10000);
+    } catch (error) {
+      isExecuting = false;
+      console.log("fetchData error " + error.message);
     }
   }
   const functions = [
