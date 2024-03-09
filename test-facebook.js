@@ -278,6 +278,7 @@ async function interaction({
         await waitFor(5000);
         await page.goto("https://www.facebook.com");
       }
+      await waitFor(10000);
       isExecuting = false;
     } catch (error) {
       isExecuting = false;
