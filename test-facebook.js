@@ -135,8 +135,6 @@ async function openFacebook({ chromePath, url }) {
   const page = await browser.newPage();
   page.on("dialog", async (dialog) => {
     console.log(`Dialog message: ${dialog.message()}`);
-
-    // Accept the dialog (confirm)
     await dialog.accept();
   });
   await page.goto(url);
