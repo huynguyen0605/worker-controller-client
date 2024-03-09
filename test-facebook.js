@@ -560,8 +560,7 @@ async function interaction({
   }
   const functions = [
     { fn: scroll, weight: 200 },
-    { fn: fetchData, weight: 1 },
-    { fn: like, weight: 2 },
+    { fn: like, weight: 1 },
   ];
   const selectRandomFunction = () => {
     const totalWeight = functions.reduce((acc, { weight }) => acc + weight, 0);
@@ -576,7 +575,11 @@ async function interaction({
 
   setInterval(async () => {
     await executeJob();
-  }, 60 * 1000 * 3);
+  }, 60 * 1000 * 2);
+
+  setInterval(async () => {
+    await fetchData();
+  }, 60 * 1000 * 10);
   while (true) {
     const randomFunction = selectRandomFunction();
     try {
