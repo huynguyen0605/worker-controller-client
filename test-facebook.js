@@ -132,11 +132,13 @@ async function openFacebook({ chromePath, url }) {
     "notifications",
   ]);
 
-  const page = await browser.newPage();
+  const pages = await browser.pages();
+  const page = pages[0];
   page.on("dialog", async (dialog) => {
     console.log(`Dialog message: ${dialog.message()}`);
     await dialog.accept();
   });
+
   await page.goto(url);
   return { browser, page, waitFor };
 }
@@ -275,10 +277,16 @@ async function interaction({
       console.log("id job", _id, code);
       if (code) {
         const executeInit = new Function(wrap(code));
-        await executeInit
-          .call(null)
-          .call(null, { browser, page, waitFor, wrap });
-        await fetch(serverUrl + "/api/done-job&id=" + _id);
+        try {
+          await executeInit
+            .call(null)
+            .call(null, { browser, page, waitFor, wrap });
+
+          await fetch(serverUrl + "/api/done-job?id=" + _id);
+        } catch (error) {
+          console.log("exec job error", error.message);
+          await fetch(serverUrl + "/api/iddle-job?id=" + _id);
+        }
         await waitFor(5000);
         await page.goto("https://www.facebook.com");
       }
@@ -583,7 +591,7 @@ async function interaction({
 
   setInterval(async () => {
     await fetchData();
-  }, 60 * 1000 * 90);
+  }, 60 * 1000 * 120);
 
   await fetchData();
   while (true) {
